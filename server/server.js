@@ -26,6 +26,9 @@ import uploadRoutes from './routes/uploadRoutes.js';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Enable trust proxy for Render / Cloudflare / Vercel reverse proxies (essential for express-rate-limit)
+app.set('trust proxy', 1);
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const clientDistPath = path.join(__dirname, '../client/dist');
@@ -46,38 +49,40 @@ app.use(compression());
 // 3. CORS Configuration
 const allowedOrigins = [
   process.env.CLIENT_URL,
+  'https://client-tan-rho-97.vercel.app',
   'http://localhost:5173',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
 ].filter(Boolean);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, server-to-server)
-      if (!origin) return callback(null, true);
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
 
-      // Check configured origins
-      if (allowedOrigins.some((allowed) => origin === allowed || allowed === '*')) {
-        return callback(null, true);
-      }
+    // Check configured origins
+    if (allowedOrigins.some((allowed) => origin === allowed || allowed === '*')) {
+      return callback(null, true);
+    }
 
-      // Automatically allow Vercel production and preview deployments
-      if (/\.vercel\.app$/.test(origin)) {
-        return callback(null, true);
-      }
+    // Automatically allow Vercel production and preview deployments
+    if (/\.vercel\.app$/.test(origin)) {
+      return callback(null, true);
+    }
 
-      if (process.env.NODE_ENV !== 'production') {
-        return callback(null, true);
-      }
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
 
-      callback(new Error(`CORS blocked for origin: ${origin}`));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-razorpay-signature'],
-  })
-);
+    callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'x-razorpay-signature'],
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // 4. Request Body Parsers
 app.use(express.json({ limit: '10mb' }));
