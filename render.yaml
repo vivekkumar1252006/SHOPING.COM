@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: shoping-backend
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CLIENT_URL
+        value: https://*.vercel.app
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGO_URI
+        sync: false
