@@ -51,10 +51,11 @@ export const connectDB = async () => {
       try {
         console.log(`Connecting to MongoDB (Atlas / Remote Database)...`);
         await mongoose.connect(uri, {
+          dbName: process.env.DB_NAME || 'shoping',
           serverSelectionTimeoutMS: 10000,
           connectTimeoutMS: 10000,
         });
-        console.log(`✅ MongoDB connected successfully to: ${mongoose.connection.host}`);
+        console.log(`✅ MongoDB connected successfully to: ${mongoose.connection.host} (Database: ${mongoose.connection.name})`);
 
         // Seed initial catalogue & admin account if empty
         try {

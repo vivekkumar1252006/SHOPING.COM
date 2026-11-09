@@ -22,12 +22,12 @@ const findOrCreateSeedUser = async (userData) => {
 export const seedDatabase = async () => {
   try {
     const productCount = await Product.countDocuments();
-    if (productCount >= 300) {
-      console.log(`📦 Database already contains ${productCount} products. Skipping seeding.`);
+    if (productCount > 0) {
+      console.log(`📦 Database already contains ${productCount} products. Skipping seeding to preserve existing data.`);
       return;
     }
 
-    console.log('🌱 Seeding/updating database with complete catalog & verified demo accounts...');
+    console.log('🌱 Empty database detected. Seeding initial catalog & verified demo accounts...');
 
     await Category.deleteMany();
     await Category.insertMany(sampleCategories);
