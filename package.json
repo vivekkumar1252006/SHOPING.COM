@@ -1,0 +1,24 @@
+{
+  "name": "smartcart-ai-monorepo",
+  "version": "1.0.0",
+  "description": "SmartCart AI - AI-Powered Smart E-Commerce Platform",
+  "type": "module",
+  "scripts": {
+    "dev": "node run-dev.js",
+    "start": "node run-dev.js",
+    "build": "npm --prefix client run build",
+    "client": "npm --prefix client run dev",
+    "server": "npm --prefix server run dev",
+    "render-build": "cd server && npm install",
+    "render-start": "cd server && node server.js"
+  },
+  "keywords": [
+    "mern",
+    "ecommerce",
+    "ai",
+    "gemini",
+    "razorpay"
+  ],
+  "author": "SmartCart Team",
+  "license": "MIT"
+}

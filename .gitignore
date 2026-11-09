@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Production builds
+client/dist/
+dist/
+
+# Local Environment Variables & Secrets (CRITICAL: NEVER COMMIT REAL SECRETS)
+.env
+.env.local
+.env.*.local
+client/.env
+client/.env.local
+server/.env
+server/.env.local
+
+# Persistent local database & data directories
+server/.data/
+.data/
+*.wt
+mongod.lock
+WiredTiger*
+
+# Uploads & Temp files
+server/uploads/*
+!server/uploads/.gitkeep
+client/public/uploads/*
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Scratch & Debug artifacts
+*.tmp
+video_frame_*.png
+test_*.png
+box_*.png
+thumb_*.png
+scooter_box_*.png
+hd_box_*.png
