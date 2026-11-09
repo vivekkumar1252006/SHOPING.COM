@@ -34,7 +34,7 @@ export const connectDB = async () => {
   if (mongoose.connection.readyState === 1) return mongoose.connection;
   if (connectionPromise) return connectionPromise;
 
-  const uri = process.env.MONGO_URI?.trim() || 'mongodb://127.0.0.1:27017/smartcart';
+  const uri = (process.env.MONGODB_URI || process.env.MONGO_URI)?.trim() || 'mongodb://127.0.0.1:27017/smartcart';
   const isPlaceholder =
     !uri ||
     uri.includes('username:password') ||

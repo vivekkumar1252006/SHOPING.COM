@@ -9,7 +9,7 @@
     "build": "npm --prefix client run build",
     "client": "npm --prefix client run dev",
     "server": "npm --prefix server run dev",
-    "render-build": "cd server && npm install",
+    "render-build": "npm --prefix server install && npm --prefix client install && npm --prefix client run build",
     "render-start": "cd server && node server.js"
   },
   "keywords": [
